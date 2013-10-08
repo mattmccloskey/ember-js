@@ -52,8 +52,8 @@ Ember JS creates a global object in JS called "config". It gets automatically lo
 ## Configuration
 
 ### config/ember_js.php
-__controllers_directory__ - The directory where you store your JS controllers. Defaults to 'assets/js/controllers/'
-__scripts__ - A list of scripts to always load (paths should be relative to __controllers_directory_)
-__default_controller__ - The default controller, and controller which all custom controllers should extend.
-__config__ - Data to be loaded into the config object. Variables like site_url are automatically set
-__controller_instance_name__ - The variable name that initialized controllers are given in JS. Defaults to window.controller
+**controllers_directory** - The directory where you store your JS controllers. Defaults to 'assets/js/controllers/'
+**scripts** - A list of scripts to always load (paths should be relative to __controllers_directory_)
+**default_controller** - The default controller, and controller which all custom controllers should extend.
+**config** - Data to be loaded into the config object. Variables like site_url are automatically set
+**controller_instance_name** - The variable name that initialized controllers are given in JS. Defaults to window.controller
