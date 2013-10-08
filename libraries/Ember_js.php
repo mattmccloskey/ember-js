@@ -96,7 +96,7 @@ class Ember_js {
 		{
 			// Check the assets js directory
 			$EMBER =& get_instance();
-			if(file_exists($EMBER->assets->js_directory.$src))
+			if(isset($EMBER->assets->js_directory) && file_exists($EMBER->assets->js_directory.$src))
 			{
 				$src = $EMBER->assets->js_directory.$src;
 			} 

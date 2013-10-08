@@ -25,6 +25,20 @@ $config['ember_js']['controllers_directory']	= 'assets/js/controllers/';
 
 /*
 |---------------------------------------------------------------
+| DEFAULT SCRIPTS
+|---------------------------------------------------------------
+|
+|	The default scripts which will be loaded on every page
+|
+*/
+$config['ember_js']['scripts'] = array(
+	'assets/js/libraries/mootools-core.js',
+	'assets/js/libraries/mootools-more.js'
+);
+
+
+/*
+|---------------------------------------------------------------
 | PAGE CONTROLLER
 |---------------------------------------------------------------
 |
@@ -48,20 +62,6 @@ $config['ember_js']['default_controller']	= 'Controller';
 
 $config['ember_js']['config'] = array(
 
-);
-
-
-/*
-|---------------------------------------------------------------
-| DEFAULT SCRIPTS
-|---------------------------------------------------------------
-|
-|	The default scripts which will be loaded on every page
-|
-*/
-$config['ember_js']['scripts'] = array(
-	'libraries/mootools-core.js',
-	'libraries/mootools-more.js'
 );
 
 
