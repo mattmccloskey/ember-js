@@ -14,8 +14,10 @@ A Javascript MVC framework for CodeIgniter and MooTools.
 3. Move the assets folder into your site root (the same folder as index.php, application, and system).
 
 ## Usage
-1. In your document head: 
+1. In your document head
+```
 	<? echo $this->ember_js->get_domready(); ?>
+```
 
 Now, copy example-controller.js and make some controllers! For example, if you have a CI controller called "Home" create a Home.js in your controller directory. That file will be automatically loaded every time the Home controller is active in CI. 
 
@@ -24,16 +26,19 @@ If your Home controller has "news" method (Example, home/news), then add a news 
 2. Pass data from your PHP to your Javascript controllers
 
 In PHP you can use "set" method to pass data to your controllers.
+```
 	<?
 		// Single variable
 		$this->ember_js->set('first_name', 'matt');
 		// Multiple
 		$this->ebmer_js->set(array('last_name' => 'McCloskey', 'age' => 31));
 	?>
+```
 
 Then you can access that data in your JS controller from the options object:
-
+```
 alert(this.options.first_name + ' '+ this.options.last_name +' is '+this.options.age);
+```
 
 3. Set site config data
 Ember JS creates a global object in JS called "config". It gets automatically loaded with some things like "site_url". You can add values to this using the __config__ setting in config/ember_js.php, or by calling $this->ebmer_js->set_config(); from your CI controllers.
