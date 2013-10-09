@@ -6,22 +6,10 @@
 |
 */
 
-class Emberjs extends MY_Controller {
-
-	function Emberjs()
-	{
-		parent::__construct();	
-	}
-	
-	function index()
-	{
-		$this->build();
-	}
+class Emberjs extends CI_Controller {
 	
 	function build($controller = false, $method = false)
-	{
-		foreach($this->lang->language as $key => $val) $this->ember_js->set_lang($key, $val);
-		
+	{		
 		$this->ember_js->output_js($controller, $method);
 	}
 }

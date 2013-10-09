@@ -5,7 +5,7 @@
 |	Ember JS class. 
 |	Creates a unified js file with config data and autoloads the controller class
 |
-|	# Paste the following line in your .htaccess file
+|	# Paste the following line in your .htaccess file if necessary
 |	RewriteRule ^emberjs/build/(.+)?\.js$ index.php/emberjs/build/$1 [L]
 |
 */
@@ -19,22 +19,11 @@ class Ember_js {
 	var $method			= false;
 	var $scripts		= array();
 	var $controller_instance_name = 'window.controller';
-	
-	// Replace constant BASEPATH from Ember
 	var $basepath		= './';
-	
 	var $active			= true;
-	
-	var $uniqkey		= '';
 	
 	function Ember_js($config = array())
 	{
-		// Generate the unique key for saving info
-		//$this->uniqkey = uniqid();
-		
-		// Create the file cache
-		
-		// CI config structure is different than EMBER
 		// For CI we store config in it's own array inside
 		// the global config file to avoid overlap
 		$config = $config['ember_js'];
@@ -130,7 +119,7 @@ class Ember_js {
 	{
 		$controller = ucwords($this->controller);
 		$path = $this->get_controller_path();
-		if($path) return site_url($path);
+		if($path) return $this->site_url($path);
 		else return false;
 	}
 	
@@ -142,18 +131,14 @@ class Ember_js {
 	function get_base_controller_url()
 	{
 		$path = $this->get_base_controller_path();
-		if($path) return site_url($path);
+		if($path) return $this->site_url($path);
 		else return false;
-	}
-	
-	
-	
-	
+	}	
 	
 	/* Return the URL for the Ember.js Base */
 	function get_ember_js_url()
 	{
-		return site_url($this->config['controller'].'/build/'.$this->controller.'/'.$this->method.'.js');
+		return $this->site_url($this->config['controller'].'/build/'.$this->controller.'/'.$this->method.'.js');
 	}
 	
 	/* Get the config data for the Controller */
@@ -185,6 +170,40 @@ class Ember_js {
 		return $initialize;
 	}
 	
+	
+	/* Print the needed head data */
+	function print_head()
+	{
+		$html = '';
+		
+		$html .= html_tag('script', array('src' => $this->get_ember_js_url(), 'type' => 'text/javascript'));
+		
+		$html .= html_tag('script', array('cddata' => $this->get_domready(), 'type' => 'text/javascript'));
+		
+		echo $html;
+	}
+	
+	
+	
+	
+	// --------------------------------------------------------------------
+		
+	/**
+	 * Alias for site_url helper in case it's not loaded
+	 * 
+	 */
+	function site_url($uri = '')
+	{
+		if (function_exists('site_url'))
+		{
+			return site_url($uri);
+		}
+		else
+		{
+			$CI =& get_instance();
+			return $CI->config->site_url($uri);
+		}
+	}
 	
 	
 	
@@ -254,7 +273,7 @@ class Ember_js {
 		
 		// Add to the config object
 		$config = $this->config['config'];
-		$config['site_url'] = site_url();
+		$config['site_url'] = $this->site_url();
 		$config_json = json_encode($config);
 		
 		// Add the lang object
@@ -284,4 +303,71 @@ class Ember_js {
 		ob_end_flush();
 	}
 	
+}
+
+
+
+/*
+*	A couple helpers we need
+*/
+if ( ! function_exists('array_to_attr'))
+{
+	function array_to_attr($attr)
+	{
+		$attr_str = '';
+
+		if ( ! is_array($attr))
+		{
+			$attr = (array) $attr;
+		}
+
+		foreach ($attr as $property => $value)
+		{
+			// If the key is numeric then it must be something like selected="selected"
+			if (is_numeric($property))
+			{
+				$property = $value;
+			}
+
+			if (in_array($property, array('value', 'alt', 'title')))
+			{
+				$value = htmlentities($value, ENT_QUOTES, INTERNAL_ENC);
+			}
+			$attr_str .= $property.'="'.$value.'" ';
+		}
+
+		// We strip off the last space for return
+		return trim($attr_str);
+	}
+}
+
+
+/**
+ * Create a XHTML tag
+ *
+ * @param	string			The tag name
+ * @param	array|string	The tag attributes
+ * @param	string|bool		The content to place in the tag, or false for no closing tag
+ * @return	string
+ */
+if ( ! function_exists('html_tag'))
+{
+	function html_tag($tag, $attr = array(), $content = false)
+	{
+		$self_close = array('link', 'meta');
+		$has_content = (bool) ($content !== false && $content !== null);
+		if(isset($attr['cddata']))
+		{
+			$has_content = true;
+			$content = $attr['cddata'];
+			unset($attr['cddata']);
+		}
+		$html = '<'.$tag;
+
+		$html .= ( ! empty($attr)) ? ' '.(is_array($attr) ? array_to_attr($attr) : $attr) : '';
+		$html .= ($has_content OR ! in_array($tag, $self_close)) ? '>' : ' />';
+		$html .= ($has_content OR ! in_array($tag, $self_close)) ? $content.'</'.$tag.'>' : '';
+
+		return $html;
+	}
 }
