@@ -9,7 +9,7 @@ A Javascript MVC framework for CodeIgniter and MooTools.
 3. Combines separate javascript files into a single document, making for cleaner head areas.
 
 ## Usage
-Make sure to load the Ember_js library, or put 'ember_js' into the libraries array in autoload.php
+Make sure to load the Ember_js library in your controller, or add it to the libraries array in autoload.php
 ```
 $this->load->library('ember_js');
 ```
@@ -23,6 +23,35 @@ Print ember into your document head
 Copy example-controller.js and make some controllers! For example, if you have a CI controller called "welcome.php" create assets/js/controllers/Welcome.js. That file will be automatically loaded and instantiated every time the Welcome controller is active in CI.
 
 If your Welcome controller has "news" method (Example, welcome/news), then add a news method to your Welcome.js, and it will be automatically executed.
+
+```
+var Welcome = new Class({
+	
+	Extends: Controller,
+	
+	initialize: function()
+	{
+		this.parent.attempt(arguments, this);
+		
+		// Controller wide code goes here
+
+	},
+	
+	/*
+	*	Methods get called automatically corresponding to the active CI method
+	*/
+	index: function()
+	{
+		// This runs at welcome
+	},
+	
+	news: function()
+	{
+		// This runs at welcome/news
+	}
+	
+});
+```
 
 #### Passing data from your PHP to your Javascript controllers:
 
