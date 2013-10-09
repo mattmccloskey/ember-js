@@ -16,3 +16,6 @@ application/libraries/*
 !application/controllers
 application/controllers/*
 !application/controllers/emberjs.php
+
+## Ignore sample welcome controller
+assets/js/controllers/Welcome.js

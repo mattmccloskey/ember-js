@@ -8,52 +8,65 @@ A Javascript MVC framework for CodeIgniter and MooTools.
 2. Allows you to easily pass information from PHP to your Javascript without printing data into the DOM.
 3. Combines separate javascript files into a single document, making for cleaner head areas.
 
-## Installation
-1. Move the config file to application/config/ember_js.php
-2. Move the Ember_js.php library file to application/libraries/Ember_js.php
-3. Move the assets folder into your site root (the same folder as index.php, application, and system).
-
 ## Usage
-#### In your document head:
+Make sure to load the Ember_js library, or put 'ember_js' into the libraries array in autoload.php
 ```
-<? echo $this->ember_js->get_domready(); ?>
+$this->load->library('ember_js');
 ```
 
-Now, copy example-controller.js and make some controllers! For example, if you have a CI controller called "Home" create a Home.js in your controller directory. That file will be automatically loaded every time the Home controller is active in CI. 
+Print ember into your document head
+```
+<? $this->ember_js->print_head(); ?>
+```
 
-If your Home controller has "news" method (Example, home/news), then add a news method to your Home.js, and it will be automatically executed.
+#### Create a javascript controller
+Copy example-controller.js and make some controllers! For example, if you have a CI controller called "welcome.php" create a assets/js/controllers/Welcome.js. That file will be automatically loaded and instantiated every time the Welcome controller is active in CI.
 
-#### Pass data from your PHP to your Javascript controllers:
+If your Welcome controller has "news" method (Example, welcome/news), then add a news method to your Welcome.js, and it will be automatically executed.
 
-In PHP you can use "set" method to pass data to your controllers.
+#### Passing data from your PHP to your Javascript controllers:
+
+In PHP you can use ember_js->set() to pass data to your javascript controllers.
 ```
 <?
 	// Single variable
 	$this->ember_js->set('first_name', 'matt');
+	
 	// Multiple
 	$this->ebmer_js->set(array('last_name' => 'McCloskey', 'age' => 31));
 ?>
 ```
 
-Then you can access that data in your JS controller from the options object:
+Then you can access that data in your javascript controller from the options object:
 ```
 alert(this.options.first_name + ' '+ this.options.last_name +' is '+this.options.age);
 ```
 
-3. Set site config data
-Ember JS creates a global object in JS called "config". It gets automatically loaded with some things like "site_url". You can add values to this using the __config__ setting in config/ember_js.php, or by calling $this->ebmer_js->set_config(); from your CI controllers.
+## Function Reference
+#### set()
+Pass data from PHP to Javascript
+```
+$this->ebmer_js->set(array('last_name' => 'McCloskey', 'age' => 31));
+```
 
-````
-<?
-	$this->ebmer_js->set_config(array('user_id') => 1));
-?>
-````
+#### set_controller()
+If you want ember to run a different javascript controller that the one active in CI
+```
+$this->ember_js->set_controller('another_controller');
+```
+
+#### set_method()
+If you want ember to run a different javascript method that the one active in CI
+```
+$this->ember_js->set_method('another_controller');
+```
+
 
 ## Configuration
 
 ### config/ember_js.php
-**controllers_directory** - The directory where you store your JS controllers. Defaults to 'assets/js/controllers/'
-**scripts** - A list of scripts to always load (paths should be relative to **controllers_directory**)
-**default_controller** - The default controller, and controller which all custom controllers should extend.
-**config** - Data to be loaded into the config object. Variables like site_url are automatically set
-**controller_instance_name** - The variable name that initialized controllers are given in JS. Defaults to window.controller
+- **controllers_directory** - The directory where you store your JS controllers. Defaults to 'assets/js/controllers/'
+- **scripts** - A list of scripts to always load (paths should be relative to **controllers_directory**)
+- **default_controller** - The default controller, and controller which all custom controllers should extend.
+- **config** - Data to be loaded into the config object. Variables like site_url are automatically set
+- **controller_instance_name** - The variable name that initialized controllers are given in JS. Defaults to window.controller
