@@ -20,7 +20,7 @@ Print ember into your document head
 ```
 
 #### Create a javascript controller
-Copy example-controller.js and make some controllers! For example, if you have a CI controller called "welcome.php" create a assets/js/controllers/Welcome.js. That file will be automatically loaded and instantiated every time the Welcome controller is active in CI.
+Copy example-controller.js and make some controllers! For example, if you have a CI controller called "welcome.php" create assets/js/controllers/Welcome.js. That file will be automatically loaded and instantiated every time the Welcome controller is active in CI.
 
 If your Welcome controller has "news" method (Example, welcome/news), then add a news method to your Welcome.js, and it will be automatically executed.
 
@@ -50,13 +50,13 @@ $this->ebmer_js->set(array('last_name' => 'McCloskey', 'age' => 31));
 ```
 
 #### set_controller()
-If you want ember to run a different javascript controller that the one active in CI
+If you want ember to run a different javascript controller than the one active in CI
 ```
 $this->ember_js->set_controller('another_controller');
 ```
 
 #### set_method()
-If you want ember to run a different javascript method that the one active in CI
+If you want ember to run a different javascript method than the one active in CI
 ```
 $this->ember_js->set_method('another_controller');
 ```
