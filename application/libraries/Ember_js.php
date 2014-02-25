@@ -163,9 +163,11 @@ class Ember_js {
 			$controller = ucwords($this->config['default_controller']);
 		}
 		
+		$CI =& get_instance();
+		
 		$config = $this->get_config();
 		$initialize = "window.ember_domready = function(){ {$this->controller_instance_name} = new {$controller}({$config});";
-		if($this->method && strpos($contents, $this->method.':')) $initialize .= " if(typeOf({$this->controller_instance_name}.{$this->method}) == 'function') {$this->controller_instance_name}.{$this->method}();";
+		if($this->method && strpos($contents, $this->method.':')) $initialize .= " if(typeOf({$this->controller_instance_name}.{$this->method}) == 'function') {$this->controller_instance_name}.{$this->method}.attempt(".json_encode(array_slice($CI->uri->rsegments, 2)).");";
 		$initialize .= " };";
 		return $initialize;
 	}
